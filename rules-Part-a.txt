@@ -1,0 +1,8 @@
+alert tcp any any ->$HOME_NET any (flags: S; msg:"possible SYN DOS attack be careful"; flow:stateless:threshold: type both, track by dst, count 70, seconds 10;sid:100001;rev:1;)
+
+alert tcp any any ->$HOME_NET any (msg:"Possible TCP-SYN Flood Attack"; flags: S; sid:0002; threshold: type threshold, track by dst, count 50, seconds 5;)
+
+
+alert icmp any any ->$HOME_NET any (msg:"Possible Blind Connection-Reset Attack"; GID:1; sid:10000001; itype:3; threshold: type threshold, track by dst, count 5, seconds 5;)
+
+alert tcp $EXTERNAL_NET any ->$HOME_NET ANY (msg:"Incoming TCP-SYN"; flag:S; GID:1; sid:1000004; classtype: unusual-client-port-connection;)
